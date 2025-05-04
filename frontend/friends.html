@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Friend Management - Community Zone</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body, html {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Top navigation bar */
+        .navbar {
+            display: flex;
+            background-color: #2f3136;
+            padding: 10px;
+            justify-content: center;
+        }
+
+        .navbar button {
+            color: white;
+            background: none;
+            border: none;
+            margin: 0 15px;
+            font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .navbar button:hover {
+            background-color: #3c3f45;
+        }
+
+        .navbar button.active {
+            background-color: #3ba55d;
+            box-shadow: 0 0 0 2px #7289da inset;
+        }
+
+        .main-container {
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .edit-container {
+            width: 600px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .edit-avatar {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .edit-avatar img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #ccc;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .form-actions button {
+            padding: 10px 20px;
+            font-size: 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        #cancel-btn {
+            background-color: #ccc;
+        }
+
+        #save-btn {
+            background-color: #3ba55d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<!-- Top navigation bar -->
+<div class="navbar">
+    <button onclick="goTo('home')">Home</button>
+    <button onclick="goTo('chat')">Chat</button>
+    <button onclick="goTo('friends')" class="active">Friends</button>
+    <button onclick="goTo('post')">Post</button>
+    <button onclick="goTo('edit')">Edit</button>
+</div>
+<!--div class="main-container"-->
+
+<div class="main-container wide-container">
+    <div>
+        <h2>Friend Management</h2>
+
+        <!-- Add Friend Section -->
+        <div>
+            <label for="search-user">Add Friend：</label>
+            <input type="text" id="search-user" placeholder="Enter UID">
+            <button onclick="sendFriendRequest()">Add</button>
+        </div>
+
+        <!-- Section 1: My Friends -->
+        <div>
+            <h3>My Friends</h3>
+            <div id="friend-list"></div>
+        </div>
+
+        <!-- Section 2: Sent Requests -->
+        <div>
+            <h3>Sent Requests</h3>
+            <div id="sent-requests"></div>
+        </div>
+
+        <!-- Section 3: Received Requests -->
+        <div>
+            <h3>Received Requests</h3>
+            <div id="received-requests"></div>
+        </div>
+
+        <!-- Return to Home Button -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="goTo('home')" style="padding: 8px 15px;">Return to Home</button>
+        </div>
+    </div>
+</div>
+
+<script src="friends.js"></script>
+</body>
+</html>

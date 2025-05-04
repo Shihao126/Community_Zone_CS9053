@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.final_project.community_zone.mapper.GroupInfoMapper">
+    <insert id="insert" parameterType="org.final_project.community_zone.entity.GroupInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into group_info (`name`, description, creater_id)
+        values (#{name}, #{description}, #{createrId});
+    </insert>
+
+    <select id="selectById" parameterType="long" resultType="org.final_project.community_zone.vo.GroupInfoWithDetail">
+        select
+            id,
+            `name`,
+            description,
+            creater_id as createrId,
+            isactive,
+            create_time as createTime,
+            update_time as updateTime
+        from group_info
+        where id = #{id} and isactive = 1
+        limit 1;
+    </select>
+
+    <select id="selectByUid"  parameterType="long" resultType="org.final_project.community_zone.vo.GroupInfoWithDetail">
+        select
+           b.id,
+           b.name,
+           b.description,
+           b.creater_id as createrId,
+           c.username as createrName,
+           b.isactive,
+           b.create_time as createTime,
+           b.update_time as updateTime
+        from
+            (select group_id, uid from group_member where uid = #{uid} and isactive = 1) a
+        left join group_info b
+        on a.group_id = b.id
+        left join user c
+        on b.creater_id = c.uid
+        order by b.name, b.create_time;
+    </select>
+
+
+</mapper>

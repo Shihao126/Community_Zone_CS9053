@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat - Community Zone</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .navbar {
+      display: flex;
+      background-color: #2f3136;
+      padding: 10px;
+      justify-content: center;
+    }
+    .navbar button {
+      color: white;
+      background: none;
+      border: none;
+      margin: 0 15px;
+      font-size: 16px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .navbar button.active {
+      background-color: #3ba55d;
+      box-shadow: 0 0 0 2px #7289da inset;
+    }
+    .main {
+      display: flex;
+      height: calc(100vh - 50px);
+    }
+    .sidebar {
+      width: 200px;
+      background-color: #2f3136;
+      padding: 10px;
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+    .top-buttons button {
+      width: 100%;
+      background-color: #5865f2;
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+    .icon-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .group-icon, .friend-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .group-icon { background-color: #5865f2; }
+    .friend-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #3498db; /* Default - Blue */
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin-bottom: 6px;
+    }
+    
+    .friend-icon.active {
+      background-color: #2ecc71; /* Turn green when selected */
+    }
+
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #f4f4f4;
+    }
+    #messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    .message-input {
+      display: flex;
+      padding: 10px;
+      background-color: white;
+      border-top: 1px solid #ccc;
+    }
+    .message-input input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .message-input button {
+      background-color: #3ba55d;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      margin-left: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="navbar">
+  <button onclick="goTo('home')">Home</button>
+  <button class="active" onclick="goTo('chat')">Chat</button>
+  <button onclick="goTo('friends')">Friends</button>
+  <button onclick="goTo('post')">Post</button>
+  <button onclick="goTo('edit')">Edit</button>
+</div>
+<div class="main">
+  <div class="sidebar">
+    <div class="top-buttons">
+      <button onclick="showCreateGroupPrompt()">Create Group</button>
+      <button onclick="showJoinGroupPrompt()">Join Group</button>
+    </div>
+    <div class="section">
+      <div class="section-title">My Groups</div>
+      <div class="icon-list" id="group-icons"></div>
+    </div>
+    <div class="section">
+      <div class="section-title">Friend List</div>
+      <div class="icon-list" id="friend-icons"></div>
+    </div>
+  </div>
+  <div class="chat-area">
+    <div id="messages"></div>
+    <div class="message-input">
+      <input type="text" id="messageText" placeholder="Type a message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+    
+  </div>
+</div>
+<script src="chat.js"></script>
+</body>
+</html>

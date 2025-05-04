@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.final_project.community_zone.mapper.BlogMapper">
+
+    <insert id="insert" parameterType="org.final_project.community_zone.entity.Blog" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into blog (title, content, uid, has_image, image_id, permission)
+        values (#{title}, #{content}, #{uid}, #{hasImage}, #{imageId}, #{permission})
+    </insert>
+
+    <select id="selectById" parameterType="long" resultType="org.final_project.community_zone.vo.BlogWithDetail">
+        select
+            a.id,
+            a.title,
+            a.content,
+            a.uid,
+            b.username,
+            a.has_image as hasImage,
+            a.image_id as imageId,
+            a.permission as permission,
+            b.has_image as userHasImage,
+            b.image_id as userImageId,
+            a.isactive as isactive,
+            a.create_time as createTime,
+            a.update_time as updateTime
+        from blog a
+        left join user b on a.uid = b.uid
+        where a.id = #{id} and a.isactive = 1;
+    </select>
+
+
+    <update id="updateById" parameterType="org.final_project.community_zone.entity.Blog">
+        update blog
+        set
+            title = #{title},
+            content = #{content},
+            uid = #{uid},
+            has_image = #{hasImage},
+            image_id = #{imageId},
+            permission = #{permission}
+        where id = #{id};
+    </update>
+    <update id="deleteById" parameterType="long">
+        update blog
+        set isactive = 0
+        where id = #{id};
+    </update>
+
+    <select id="selectByParameter" parameterType="org.final_project.community_zone.dto.BlogRequest" resultType="org.final_project.community_zone.vo.BlogWithDetail">
+        select
+            a.id,
+            a.title,
+            a.content,
+            a.uid,
+            b.username,
+            a.has_image as hasImage,
+            a.image_id as imageId,
+            a.permission as permission,
+            a.isactive as isactive,
+            b.has_image as userHasImage,
+            b.image_id as userImageId,
+            a.create_time as createTime,
+            a.update_time as updateTime
+        from
+            (select
+                g.*,
+                uid2,
+                if(uid = #{uid}, 1, 0) as private_tag,
+                if(uid2 is not null and (permission = 'FRIEND' or permission = 'PUBLIC'), 1, 0) as friend_tag,
+                if(uid != #{uid} and uid2 is null and permission = 'PUBLIC', 1, 0) as public_tag
+            from blog g
+            left join
+                (select uid2
+                from friendship
+                where uid = #{uid} and isactive = 1
+                ) f
+            on g.uid = f.uid2
+            where
+                g.isactive = 1
+                and g.create_time>=#{startTime}
+                and #{endTime} >= g.create_time
+            ) a
+            left join user b on a.uid = b.uid
+        where
+            (private_tag =1 and #{privateTag} =1)
+            or (friend_tag = 1 and #{friendTag} = 1)
+            or (public_tag = 1 and #{publicTag} = 1);
+    </select>
+</mapper>

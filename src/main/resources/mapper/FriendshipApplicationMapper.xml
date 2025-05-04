@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.final_project.community_zone.mapper.FriendshipApplicationMapper">
+
+
+    <select id="countByUidAndUid2" parameterType="org.final_project.community_zone.dto.FriendshipRequest" resultType="int">
+        select count(1) from friendship_application
+        where uid = #{uid} and uid2 = #{uid2} and status = 'WAITING';
+    </select>
+
+    <insert id="update" parameterType="org.final_project.community_zone.dto.FriendshipRequest">
+        replace INTO friendship_application (uid, uid2, detail, status, isactive, create_time)
+        VALUES (#{uid}, #{uid2}, #{detail}, #{status}, #{isactive}, #{createTime});
+    </insert>
+
+    <select id="selectByUid" parameterType="long" resultType="org.final_project.community_zone.vo.FriendshipRequestWithDetail">
+        select
+            f.uid,
+            f.uid2,
+            a.username,
+            b.username as username2,
+            f.detail,
+            f.status,
+            f.isactive,
+            f.create_time as createTime,
+            f.update_time as updateTime
+        from friendship_application f
+        join user a on f.uid = a.uid and a.isactive = 1
+        join user b on f.uid2 = b.uid and b.isactive = 1
+        where f.uid = #{uid} and f.isactive = 1
+        order by updateTime desc
+    </select>
+
+    <select id="selectByUid2" parameterType="long" resultType="org.final_project.community_zone.vo.FriendshipRequestWithDetail">
+        select
+            f.uid,
+            f.uid2,
+            a.username,
+            b.username as username2,
+            f.detail,
+            f.status,
+            f.isactive,
+            f.create_time as createTime,
+            f.update_time as updateTime
+        from friendship_application f
+        join user a on f.uid = a.uid and a.isactive = 1
+        join user b on f.uid2 = b.uid and b.isactive = 1
+        where f.uid2 = #{uid2} and f.isactive = 1 and f.status='WAITING'
+        order by updateTime desc
+    </select>
+
+
+    <insert id="judge" parameterType="org.final_project.community_zone.dto.FriendshipJudgeRequest">
+        insert into friendship_application (uid, uid2, status)
+        values (#{uid}, #{uid2}, #{status})
+        on duplicate key update
+            status = values(status);
+    </insert>
+
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.final_project.community_zone.mapper.CommentMapper">
+    <insert id="insert" parameterType="org.final_project.community_zone.entity.Comment" useGeneratedKeys="true"
+            keyProperty="id">
+        INSERT INTO comment (blog_id, uid, content)
+        VALUES (#{blogId}, #{uid}, #{content});
+    </insert>
+
+    <select id="selectByBlogId" parameterType="long" resultType="org.final_project.community_zone.vo.CommentWithDetail">
+        select c.id,
+               c.blog_id     as blogId,
+               c.uid,
+               u.username,
+               c.content,
+               c.isactive,
+               c.create_time as createTime,
+               c.update_time as updateTime
+        from comment c
+                 join user u on c.uid = u.uid
+        where c.blog_id = #{blogId}
+          and c.isactive = 1
+        order by id desc
+    </select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.final_project.community_zone.mapper.CharRecordMapper">
+
+        <insert id="insert" parameterType="org.final_project.community_zone.entity.ChatRecord">
+            insert into chat_record(uid, session_type, session_id, record)
+            values (#{uid}, #{sessionType}, #{sessionId}, #{record})
+        </insert>
+
+        <select id="get" parameterType="org.final_project.community_zone.dto.ChatRecordRangeRequest" resultType="org.final_project.community_zone.vo.ChatRecordWithDetail">
+            select
+                a.id,
+                a.uid,
+                b.username,
+                a.session_type as sessionType,
+                a.session_id as sessionId,
+                a.record,
+                a.create_time as createTime,
+                a.update_time as updateTime
+            from chat_record a
+            join user b
+            on a.uid = b.uid
+            where a.session_type = #{sessionType} and a.session_id = #{sessionId}
+              and a.create_time >= #{startTime} and  ifnull(#{endTime}, "9999-12-31") >= a.create_time and a.isactive = 1
+            order by a.create_time
+        </select>
+
+</mapper>

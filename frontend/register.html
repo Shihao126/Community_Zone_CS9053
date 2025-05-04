@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration - Community Zone</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="login-container">
+    <h2>Register an account</h2>
+
+    <input type="text" id="username" placeholder="username" required>
+    <input type="password" id="password" placeholder="password" required>
+
+    <select id="gender">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+    </select>
+
+    <input type="date" id="birthday" placeholder="birthday">
+
+    <select id="education">
+        <option value="Bachelor">Bachelor</option>
+        <option value="Master">Master</option>
+        <option value="PhD">PhD</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <select id="nationality">
+        <option value="CN">China</option>
+        <option value="US">United States</option>
+        <option value="UK">United Kingdom</option>
+        <option value="JP">Japan</option>
+        <option value="Other">Other</option>
+    </select>
+
+    <button onclick="register()">Register</button>
+
+    <p id="message"></p>
+</div>
+<script src="register.js"></script>
+</body>
+</html>

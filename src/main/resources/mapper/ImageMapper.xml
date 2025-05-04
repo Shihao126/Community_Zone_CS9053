@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.final_project.community_zone.mapper.ImageMapper">
+    <insert id="upload" parameterType="org.final_project.community_zone.entity.Image" useGeneratedKeys="true" keyProperty="id">
+        insert into image (file_name, content_type, image_data)
+        values (#{fileName}, #{contentType}, #{imageData});
+    </insert>
+
+    <select id="get" parameterType="Long" resultType="org.final_project.community_zone.entity.Image">
+        select
+            id,
+            file_name as fileName,
+            content_type as contentType,
+            image_data as imageData,
+            isactive,
+            create_time as createTime,
+            update_time as updatetime
+        from image
+        where id = #{id}
+        limit 1;
+    </select>
+</mapper>
